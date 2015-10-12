@@ -57,15 +57,15 @@ int main(int argc, char** argv)
 
     /**
      * Create a set (or multiset for duplicated keys) of a paired value, score - name.
-     * This allow us to use a personalized function to define how the data is sorted
+     * This allow us to use a personalized function to define how the data is sorted.
      *
-     * Why use set? Set uses a binary three implementation. This method is fast for inserting
+     * Why use set? Set uses a binary tree implementation. This method is fast for inserting
      * ordered elements, but is not optimized for retrieving random elements.
      *
      * Since we won't use random access to output the results, this is the best approach.
      *
      * We could think in using map or multimap for this purpose as we need a "key" (the score)
-     * and a "value" the name. It indeed also uses a binary three implementation and sorts the
+     * and a "value" the name. It indeed also uses a binary tree implementation and sorts the
      * elements by "key", but does not allow to set a proper rule for sorting the values.
      * Most implementations keep the values in the inserted order. So to achieve the purpose
      * of this exercise, we would have to sort the grouped (by key) values during the output time.
