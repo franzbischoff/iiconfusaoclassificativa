@@ -67,8 +67,12 @@
 #include <cstdlib>
 #include <iostream>
 #include <cstring>
+#include <set>
 
 using namespace std;
+
+bool fncomp(pair<uint32_t, string> lhs, pair<uint32_t, string> rhs);
+void print_help();
 
 /*
  *
@@ -79,9 +83,13 @@ int main(int argc, char** argv)
     uint32_t competitors;
     uint32_t problems;
     string name(20, ' ');
-    uint8_t score[10];
+    uint32_t score;
     char arg;
-    bool interactive = true;
+    bool interactive = false;
+    bool(*fn_pt)(pair<uint32_t, string>, pair<uint32_t, string>) = fncomp;
+
+    set < pair<uint32_t, string>, bool(*)(pair<uint32_t, string>, pair<uint32_t, string>) > scoreset(fn_pt);
+
 
     for (i = 1; i < argc; i++)
     {
@@ -99,7 +107,7 @@ int main(int argc, char** argv)
                     interactive = true;
                     break;
                 case 'h':
-                    //print_help();
+                    print_help();
                     return 0;
                     break;
                 default:
@@ -111,6 +119,7 @@ int main(int argc, char** argv)
 
     if (interactive)
         cout << "Insert the number of competitors and problems [e.g.: 4 3] : " << endl;
+
     cin >> competitors >> problems;
 
     for (i = 0; i < competitors; i++)
@@ -120,34 +129,48 @@ int main(int argc, char** argv)
 
         cin >> name;
 
-        for (j = 0; j < problems; j++)
+        for (j = 0, score = 0; j < problems; j++)
         {
-            cin >> score[j];
+            string t;
+            cin >> t;
+
+            score += atoi(t.c_str());
         }
 
-        //        calc_freq(a, b);
-        //
-        //        print_most_frequent();
+        scoreset.insert(pair<uint32_t, string>(score, name));
     }
 
-    cout << name << " " << score[0] << " " << score[1] << " " << score[2] << endl;
+    for (set< pair<uint32_t, string> >::reverse_iterator it = scoreset.rbegin(); it != scoreset.rend(); ++it)
+        cout << (*it).second << " " << (*it).first << '\n';
 
     return 0;
+}
+
+bool fncomp(pair<uint32_t, string> lhs, pair<uint32_t, string> rhs)
+{
+    if (lhs.first == rhs.first)
+    {
+        return rhs.second.compare(lhs.second) < 0;
+    }
+    else
+    {
+        return lhs.first < rhs.first;
+    }
 }
 
 void print_help()
 {
     cout << "CONFUSAO CLASSIFICATIVA - Introducao a informatica" << endl << endl;
     cout << "SYNOPSIS" << endl << endl;
-    cout << "\tPrints the most frequent digits in a given interval." << endl << endl;
+    cout << "\tPrints the scores of several competitors, inversely ordered by score, followed by alphabetical order." << endl << endl;
 
     cout << "DESCRIPTION" << endl << endl;
     cout << "\tINPUT:" << endl << "\t\tThis program uses the stdin. Type 'program < input.txt' for file input or use the -i argument for interactive mode." << endl << endl;
 
-    cout << "\tFORMAT:" << endl << "\t\tThe first line holds an integer 'N' with the number of intervals do consider. This number must be 1 <= N <= 1,000." << endl;
-    cout << "\t\tThe following lines are composed by two integers 'A' and 'B'. These numbers must be 1 <= A <= B <= 1,000,000,000." << endl << endl;
+    cout << "\tFORMAT:" << endl << "\t\tThe first line holds an integer 'N' with the number of competitors and an integer 'P' with the number of problems. These numbers must be 1 <= N <= 50,000 and 1 <= P <= 10." << endl;
+    cout << "\t\tThe following 'N' lines are composed by an unique string with the first name of the competitor, followed by 'P' integers with the score of each test from 0 to 100." << endl << endl;
 
-    cout << "\tOUTPUT:" << endl << "\t\tThe output is composed of N lines. The first number tells the frequency and the following numbers the digits that are most frequent." << endl << endl;
+    cout << "\tOUTPUT:" << endl << "\t\tThe output is composed of N lines. The first column is the name of the competitor and the second column is the score." << endl << endl;
 
     cout << "OPTIONS" << endl << endl;
     cout << "\t-h This help." << endl << endl;
