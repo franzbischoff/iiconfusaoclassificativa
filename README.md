@@ -26,8 +26,8 @@ O output deve conter exactamente N linhas contendo a classificação dos concorr
 São garantidos os seguintes limites em todos os casos de teste que irão ser colocados ao programa:
 
 ```
-1 ≤ N ≤ 50 000	     	Número de Concorrentes
-1 ≤ P ≤ 10	     	Número de Problemas
+1 ≤ N ≤ 50 000          Número de Concorrentes
+1 ≤ P ≤ 10              Número de Problemas
 ```
 
 <h2>Nota sobre a avaliação</h2>
