@@ -59,10 +59,8 @@ int main(int argc, char** argv)
      * Create a set (or multiset for duplicated keys) of a paired value, score - name.
      * This allow us to use a personalized function to define how the data is sorted.
      *
-     * Why use set? Set uses a binary tree implementation. This method is fast for inserting
-     * ordered elements, but is not optimized for retrieving random elements.
-     *
-     * Since we won't use random access to output the results, this is the best approach.
+     * Why use set? Set Search, removal, and insertion operations have logarithmic complexity.
+     * Sets are usually implemented as red-black trees.
      *
      * We could think in using map or multimap for this purpose as we need a "key" (the score)
      * and a "value" the name. It indeed also uses a binary tree implementation and sorts the
